@@ -2,7 +2,7 @@ php-jqString
 ===
 String class implementation in PHP similar to jQuery String class but with additional methods
 
-This class is based on the String class written by [Alec Gorge] (https://github.com/alecgorge) but with some additions and modifications [here] (https://github.com/egpo/PHP-String-Class)
+This class is based on the String class written by [Alec Gorge] (https://github.com/alecgorge) but with some additions and modifications, [here] (https://github.com/egpo/PHP-String-Class) is the original class.
 
 String Class Methods
 ---
