@@ -1,132 +1,145 @@
 php-jqString
-============
+===
 String class implementation in PHP similar to jQuery String class but with additional methods
 
+This class is based on the String class written by [Alec Gorge] (https://github.com/alecgorge) but with some additions and modifications [here] (https://github.com/egpo/PHP-String-Class)
 
-#####Live samples and other projects can be found on my [development] (http://dev.egpo.net/rpn) site.
-
-##### Some Examples:
-##### 1. A numeric example:
-- Expression:  **5 + ((1 + 2) * 4) − 3**
-
-######RPN representation:
-- 5 1 2 + 4 * + 3 -
-
-The result of this example is **14** and is calculated in the following manner:
-
-1. 1+2 = 3
-2. 3*4 = 12
-3. 12+5 = 17
-4. 17-3 = **14**
-
-```
-require_once('rpn.php');
-$rpn = new RPN();
-$res = $rpn->rpn("5 + ((1 + 2) * 4) - 3");
-```
-
-##### 2. A 'date' and 'strtotime' functions example:
-- Expression: **'Now is: '+date('Y-m-d H:i:s',strtotime('Now'))**
-
-######RPN representation:
-- 'Now is: ' 'Y-m-d H:i:s' 'Now' strtotime date_ +
-
-The result of this example is **Now is: 2014-01-05 13:13:20:09** and is formed in this way:
-
-1. strtotime('Now') = 1388928430
-2. date_2('Y-m-d H:i:s', 1388928430) = '2014-01-05 13:27:10'
-3.  'Now is: ' + '2014-01-05 13:27:10' = **'Now is: 2014-01-05 13:20:09'**
-
-```
-require_once('rpn.php');
-$rpn = new RPN();
-$res = $rpn->rpn("'Now is: '+date('Y-m-d H:i:s',strtotime('Now'))");
-```
-
-##### 3. A string example:
-- Expression:  **'This is an '+upper('example')+' of a RPN '+lower('STATEMENT')**
-
-######RPN representation:
-- 'This is an ' 'example' upper + ' of a RPN ' + 'STATEMENT' lower +
-
-The result of this example is **This is an EXAMPLE of a RPN statement** and is formed in this way:
-
-1. upper('example') === strtoupper('example') = 'EXAMPLE'
-2. 'This is an ' + 'EXAMPLE' = 'This is an EXAMPLE'
-3. 'This is an EXAMPLE' + ' of a RPN ' = 'This is an EXAMPLE of a RPN '
-4. lower('STATEMENT') === strtolower('STATEMENT') = 'statement'
-5. 'This is an EXAMPLE of a RPN ' + 'statement' = **'This is an EXAMPLE of a RPN statement'**
-
-```
-require_once('rpn.php');
-$rpn = new RPN();
-$res = $rpn->rpn("'Now is: '+date('Y-m-d H:i:s',strtotime('Now'))");
-```
-
-Definition
+String Class Methods
 ---
-From wikipedia: **Reverse Polish Notation (RPN)** is a mathematical notation in which every operator follows all of its operands. It is also known as postfix notation and is parenthesis-free as long as operator arities are fixed. The description "Polish" refers to the nationality of logician Jan Łukasiewicz, who invented (prefix) Polish notation in the 1920s. For more info, please visit [wikipedia] (http://en.wikipedia.org/wiki/Reverse_Polish_notation).
+Creating a new String object:
+```
+class String implements ArrayAccess { }
 
-Class Constants
+$str = new String("some text");
+```
+Converts the String object into a string
+```
+public function toString () { }
+```
+ArrayAccess Methods
+Similar to array_key_exists
+```
+public function offsetExists ($index) { }
+```
+Retrieves an array value
+```
+public function offsetGet ($index) { }
+```
+Sets an array value
+```
+public function offsetSet ($index, $val) { }
+```
+Removes an array value
+```
+public function offsetUnset ($index) { }
+```
+Create a new Sting
+```
+public static function create ($obj) { }
+```
+Standard PHP substr function, return a new String object
+```
+public function substr ($start, $length = NULL) { }
+```
+Standard PHP substr function, return a string
+```
+public function _substr ($start, $length = NULL) { }
+```
+Similar functionality of [jQuery substring] (http://www.w3schools.com/jsref/jsref_substring.asp)
+```
+public function substring ($start, $end) { }
+```
+Regular expression match.  
+flags implement the same as the flags for **preg_match_all** [PHP funciton] (http://php.net/preg_match_all)
+```
+public function match ($regex, $flags = PREG_PATTERN_ORDER) { } 
+```
+Regualr expression Reverse match.
+```
+public function reversematch ($regex, $flags = PREG_PATTERN_ORDER) { } 
+```
+Regex replace
+```
+public function replace ($search, $replace, $regex = false) { }
+```
+Convert String to lower case
+```
+public function toLowerCase () { }
+```
+Convert String to upper case
+```
+public function toUpperCase () { }
+```
+Trim a string, but with additional charlist option, [here] (http://php.net/manual/en/function.trim.php)
+```
+public function trim ($charlist = null) { }
+```
+Left Trim a string, but with additional charlist option, [here] (http://php.net/manual/en/function.ltrim.php)
+```
+public function ltrim ($charlist = null) { }
+```
+Right Trim a string, but with additional charlist option, [here] (http://php.net/manual/en/function.rtrim.php)
+```
+public function rtrim ($charlist = null) { }
+```
+Implements [PHP's str_word_count] (http://php.net/manual/en/function.str-word-count.php)
+```
+public function word_count ($format = 0, $charlist = UTF8_DECODED_CHARLIST) { }
+```
+Returns string block between two Regex, the result in similar behavior as match.
+```
+public function block ($begin_regex, $end_regex, $flags = PREG_PATTERN_ORDER) { }
+```
+Returns string block between two Regex, the result in similar behavior as match.
+```
+public function reverseblock ($begin_regex, $end_regex, $flags = PREG_PATTERN_ORDER) { }
+```
+
+Array Class Methods
 ---
-Used when declaring a user defined function, to tell the class there are unlimited number of arguments when calling the function:
 ```
-static $RPN_UNLIMIT = 999;
+class Arr extends ArrayObject { }
 ```
-Class Variables
----
-A copy of the input string of the last RPN calculation:
+Array concatenate
 ```
-public $input='';
+public function add () { }
 ```
-The Reverse Polish notation conversion:
+Get array element
 ```
-public $rpn='';
+public function get ($i) { }
 ```
-The result of the Polish Notation calculation:
+Perform [each] (http://api.jquery.com/each/) loop on an array
 ```
-public $res='';
+public function each ($callback) { }
+``` 
+Push one or more elements onto the end of array, if key not null, can push on array of array
 ```
-An array of the supported operators available for calculation with their weight prec·e·dence:
+public function push ($value, $key=NULL) { }
 ```
-private $operators = array('^' => 1, '*' => 2, '/' => 2, '+' => 3, '-' => 3);
+Pops the last element of the array
 ```
-Array with all the available functions, including the user defined functions and the PHP internal functions:
+public function pop () { }
 ```
-private $functions;
+Shift an element off the beginning of array
 ```
-Internal array built for faster execution of the RPN calculation:
+public function shift () { }
 ```
-private $rpnar;
+UnShift an element off the beginning of array
 ```
-
-Class Methods
----
-Main RPN processing method:
-   Performs the RPN conversion and calculation.
-   - Input: $string - has the statement to be calculated, can be a numeric or a string
-   - Output: The result of the calculation
-
+public function unshift ($value) { }
 ```
-function rpn($string){...}
+Takes an input array object and returns a new array object without duplicate values.
+Implements the PHP's [array_unique] (http://il1.php.net/manual/en/function.array-unique.php) function
 ```
-
-Register a user defined function:
-   The function can accept any number of parameters.
-   - Input: 
-     - $function - function name used in the Reverse Polish Notation input
-     - $callback - name of the function to call for processing, user defined of internal function
-     - $minparams - minimum parameters the function receives
-     - $maxparams - maximum parameters the function can receive
-   - Output: true / false
-
+public function unique ($sort_flags = SORT_STRING){ }
 ```
-function register($function, $callback, $minparams, $maxparams=null){...}
+Join two arrays
 ```
-**Example:**
+public function join ($paste = '') { }
 ```
-$rpn->register('nword','my_word2',2,3);
-$res = $rpn->rpn("nword('one,two,three,four',2)+' '+nword('one,two,three,four',4)");
+Sort an array
+```
+public function sort () { }
 ```
 
 License: The MIT License (MIT)
